@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- fetch Install_Dir registry key created by GSGraph installer, to be able to reference dll files  -->
+        <GSGraphInstallDir>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Gradientspace\GSGraph@Install_Dir)</GSGraphInstallDir>
+    </PropertyGroup>
+
+	<!-- references to built DLLs in current GSGraph installation. Can we avoid hardcoding this somehow?? -->
+  <!-- the path is in the registry at HKLM\Software\Gradientspace\GSGraph\Install_Dir -->
+  <ItemGroup>
+    <Reference Include="geometry3Sharp">
+      <Private>False</Private>
+      <HintPath>$(GSGraphInstallDir)\GraphEditor\geometry3Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GSNodeGraph">
+      <Private>False</Private>
+      <HintPath>$(GSGraphInstallDir)\GraphEditor\GSNodeGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="GSNodeGraphCore">
+      <Private>False</Private>
+      <HintPath>$(GSGraphInstallDir)\GraphEditor\GSNodeGraphCore.dll</HintPath>
+    </Reference>
+    <Reference Include="GSNodeGraphCoreLibrary">
+      <Private>False</Private>
+      <HintPath>$(GSGraphInstallDir)\GraphEditor\GSNodeGraphCoreLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+    <!-- Copy output .dll, .pdb, json files to top-level (SolutionDir)\CustomNodeLibraries\(ProjectName). This is the "installed" version -->
+    <Target Name="PublishDlls" AfterTargets="AfterBuild">
+        <!-- Copy command docs: https://learn.microsoft.com/en-us/visualstudio/msbuild/copy-task?view=vs-2022 -->
+        <ItemGroup>
+	        <BuildOutputFiles Include="$(OutDir)\$(MSBuildProjectName).*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(BuildOutputFiles)" DestinationFolder="$(SolutionDir)\CustomNodeLibraries\$(MSBuildProjectName)" SkipUnchangedFiles="true" />
+    </Target>
+
+
+</Project>

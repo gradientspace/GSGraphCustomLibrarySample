@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "GSGraphEditor": {
+      "commandName": "Executable",
+      "commandLineArgs": "-AddNodeLibraryPath=$(TargetDir)",
+      "executablePath": "$(GSGraphInstallDir)\\GraphEditor\\GSGraphEditor.exe"
+    },
+    "GSGraphEditor_RMS": {
+      "commandName": "Executable",
+      "commandLineArgs": "-AddNodeLibraryPath=$(TargetDir)",
+      "executablePath": "D:\\git\\DerivativeDev\\DerivativeEditor\\GraphEditorAppV2\\bin\\Debug\\net9.0\\GSGraphEditor.exe"
+    }
+  }
+}
