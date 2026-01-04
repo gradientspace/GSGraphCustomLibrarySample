@@ -71,13 +71,15 @@ node library. Eg the subfolder could be copied to the 'AdditionalNodeLibraries' 
 installation, or another location that can be added as permanent NodeLibrary Path in your GSGraphEditor
 settings (eg via the Node Libraries dialog in the app).
 
-You *could* add the (SolutionDir)\CustomNodeLibraries\ as a NodeLibrary Path in the app. However currently
-this would cause issues when running in Debug in this project, as a duplicate version of the NodeLibrary
-will already have been loaded. In fact currently there is *not* a great way to handle working in
-"building node library" mode vs "using node library"...improvements TBD!
+You can also add the (SolutionDir)\CustomNodeLibraries\ as a NodeLibrary Path in the App (ie stored in the
+NodeLibraryPaths list in the editor_config.json file). Then when you run the GraphEditor standalone, the
+last-built DLL will be loaded from that location. When you run from this Debug project, the version specified
+on the command-line will supercede that version (because those paths are checked first, and duplicate DLLs are
+ignored). 
 
-(Also, any .gg files you save when working in Debug mode will have references to the /bin/Debug/ DLL paths,
- which might result in those versions being loaded when you open those .gg files...this also needs work)
+Note that any .gg files you save when working in Debug mode will have references to the /bin/Debug/ DLL paths.
+The graph loader will attempt to load those assemblies, which will fail (due to the duplicate names). This 
+should all work fine, but it will print some log spam.
 
 If you want to disable this copying, comment-out the "PublishDlls" Target in the .csproj file
 (or you can also change the target path there).
